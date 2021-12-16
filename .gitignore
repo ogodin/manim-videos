@@ -7,6 +7,9 @@
 .svg
 .tex
 
+# Manim
+Exercices/Algebre/media
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
