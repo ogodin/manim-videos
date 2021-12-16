@@ -1,6 +1,12 @@
 # OS X
 .DS_Store
 
+# LaTeX
+.dvi
+.aux
+.svg
+.tex
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
