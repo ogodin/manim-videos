@@ -17,7 +17,7 @@ class motivation(Scene):
         self.wait(2)
 
         sq = Square().scale(2).move_to(LEFT).set_color(BLUE)
-        sq_sidelabel = MathTex('c').next_to(sq, direction=DOWN).set_color(TEAL)
+        sq_sidelabel = MathTex('c').next_to(sq, direction=DOWN)
         sq_area = MathTex(r"A = c \times c").next_to(sq, direction=3*RIGHT)
         sq_group = VGroup(sq, sq_sidelabel)
         self.play(FadeIn(sq_group))
@@ -27,10 +27,10 @@ class motivation(Scene):
 
         tri = Polygon([-5, -1.5, 0], [-2, -1.5, 0], [-3.5, 1.5, 0]).shift(2.5*RIGHT).set_color(BLUE)
         tri_vertices = tri.get_vertices()
-        tri_baselabel = MathTex('b').next_to(tri, direction=DOWN).set_color(TEAL)
+        tri_baselabel = MathTex('b').next_to(tri, direction=DOWN)
         tri_middlepoint = (tri_vertices[0] + tri_vertices[1])/2
         tri_height = DashedLine(tri_vertices[2], tri_middlepoint).set_color(TEAL)
-        tri_heightlabel = MathTex('h').next_to(tri_height, direction=0.75*LEFT).set_color(TEAL)
+        tri_heightlabel = MathTex('h').next_to(tri_height, direction=0.75*LEFT)
         tri_area = MathTex(r"A = \frac{b \times h}{2}").next_to(tri, direction=3*RIGHT)
         tri_group = VGroup(tri, tri_baselabel, tri_height, tri_heightlabel)
         self.play(ReplacementTransform(sq_group, tri_group))
@@ -42,11 +42,11 @@ class motivation(Scene):
         trap_scale = 0.75
         trap.scale(trap_scale)
         trap_vertices = trap.get_vertices()
-        trap_bigbaselabel = MathTex('B').next_to(trap, direction=DOWN).set_color(TEAL)
+        trap_bigbaselabel = MathTex('B').next_to(trap, direction=DOWN)
         trap_smallbasemiddlepoint = (trap_vertices[0] + trap_vertices[1])/2
-        trap_smallbaselabel = MathTex('b').next_to(trap_smallbasemiddlepoint, direction=UP).set_color(TEAL)
+        trap_smallbaselabel = MathTex('b').next_to(trap_smallbasemiddlepoint, direction=UP)
         trap_height = DashedLine(trap_vertices[0], trap_vertices[3]+trap_scale*3*RIGHT).set_color(TEAL)
-        trap_heightlabel = MathTex('h').next_to(trap_height, direction=0.75*LEFT).set_color(TEAL)
+        trap_heightlabel = MathTex('h').next_to(trap_height, direction=0.75*LEFT)
         trap_group = VGroup(trap, trap_bigbaselabel, trap_smallbaselabel, trap_height,trap_heightlabel)
         trap_area = MathTex(r"A = \frac{\left(B + b\right) \times h}{2}").next_to(trap, direction=3*RIGHT)
         self.play(ReplacementTransform(tri_group, trap_group))
@@ -60,8 +60,8 @@ class motivation(Scene):
         octo_vertices = octo.get_vertices()
         octo_middlepoint = np.mean(octo_vertices, axis=0)
         octo_apothem = DashedLine(octo_middlepoint, (octo_vertices[3] + octo_vertices[4])/2).set_color(TEAL)
-        octo_apothemlabel = MathTex('a').next_to(octo_apothem, direction=UP).set_color(TEAL)
-        octo_sidelabel = MathTex('c').next_to(octo, direction=UP).set_color(TEAL)
+        octo_apothemlabel = MathTex('a').next_to(octo_apothem, direction=UP)
+        octo_sidelabel = MathTex('c').next_to(octo, direction=UP)
         octo_group = VGroup(octo, octo_apothem, octo_apothemlabel, octo_sidelabel)
         octo_area = MathTex(r"A = \frac{P \times a}{2}").next_to(trap, direction=3*RIGHT)
         self.play(ReplacementTransform(trap_group, octo_group))
@@ -148,7 +148,7 @@ class motivation(Scene):
         )
         self.wait(2)
 
-        self.play(tri_circlegroup.animate.move_to(tri_circle_center).scale(1/3), tri.animate.set_stroke(opacity = 1), tri_label.animate.set_fill(opacity = 1))
+        self.play(tri_circlegroup.animate.move_to(tri_circle_center).scale(0.34), tri.animate.set_stroke(opacity = 1), tri_label.animate.set_fill(opacity = 1))
         self.wait(2)
         sq_circle_group = tri_circlegroup.copy()
         self.add(sq_circle_group)
@@ -175,12 +175,28 @@ class motivation(Scene):
         self.clear()
         self.wait(2)
 
-        axes = Axes(x_range=[-1,8], x_length=10, y_range=[-10,80], y_length=6, y_axis_config={"include_ticks": False},)
-        graph = axes.plot(lambda x : x**2 + 10, x_range=[-1,8], color=TEAL)
-        area = axes.get_area(graph, [1, 6], color=GREY, opacity=0.5)
-        self.add(axes, graph, area)
+        axes = Axes(x_range=[-1,8], x_length=10, y_range=[-10,80], y_length=6, axis_config={"include_ticks": False},)
+        graph = axes.plot(lambda x : x**2 + 10, x_range=[-1,8], color=BLUE)
 
-        dx_list = [1, 0.5, 0.25, 0.1, 0.05, 0.025, 0.01]
+        self.play(FadeIn(axes, graph))
+        self.wait(2)
+
+        line_1 = axes.get_vertical_line(axes.input_to_graph_point(1, graph), color=YELLOW)
+        line_2 = axes.get_vertical_line(axes.input_to_graph_point(6, graph), color=YELLOW)
+        line_1_label = MathTex(r"a").next_to(line_1, direction=DOWN, buff=0.35)
+        line_2_label = MathTex(r"b").next_to(line_2, direction=DOWN, buff=0.35).align_to(line_1_label, DOWN)
+        self.play(Create(line_1), Create(line_2))
+        self.wait(2)
+        self.play(Write(line_1_label), Write(line_2_label))
+        self.wait(2)
+
+        area = axes.get_area(graph, [1, 6], color=TEAL, opacity=0.5)
+        self.play(FadeIn(area))
+        self.wait(2)
+        self.remove(area)
+        self.wait(2)
+
+        dx_list = [1, 0.5, 0.25, 0.1]
         rectangles = VGroup(
             *[
                 axes.get_riemann_rectangles(
@@ -195,11 +211,18 @@ class motivation(Scene):
         )
 
         first_rect = rectangles[0]
+        self.play(FadeIn(first_rect))
+        self.wait(2)
         for k in range(1, len(dx_list)):
             new_rect = rectangles[k]
             self.play(Transform(first_rect, new_rect), run_time = 3)
-            self.wait(0.5)
-        
+            self.wait(2)
+
+        self.play(FadeOut(first_rect), FadeIn(area), run_time = 2)
+        self.wait(2)
+
+        self.play(*[FadeOut(objects) for objects in self.mobjects])
+        self.clear()
         self.wait(2)
 
         return super().construct()
