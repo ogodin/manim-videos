@@ -193,9 +193,7 @@ class motivation(Scene):
         area = axes.get_area(graph, [1, 6], color=TEAL, opacity=0.5)
         self.play(FadeIn(area))
         self.wait(2)
-        self.remove(area)
-        self.wait(2)
-
+        
         dx_list = [1, 0.5, 0.25, 0.1]
         rectangles = VGroup(
             *[
@@ -211,7 +209,7 @@ class motivation(Scene):
         )
 
         first_rect = rectangles[0]
-        self.play(FadeIn(first_rect))
+        self.play(FadeOut(area), FadeIn(first_rect))
         self.wait(2)
         for k in range(1, len(dx_list)):
             new_rect = rectangles[k]
